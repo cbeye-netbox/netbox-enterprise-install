@@ -1,0 +1,12 @@
+# Generated readiness reports (contain host-specific facts — do not commit)
+reports/*.json
+
+# NetBox Enterprise installer artifacts & secrets
+*.tgz
+netbox-enterprise
+license.yaml
+*.license.yaml
+
+# Editor / OS noise
+*.swp
+.DS_Store
