@@ -16,7 +16,7 @@
 #    --json <path>       Where to write the JSON report (default: reports/...).
 #    --yes               Non-interactive (assume yes to prompts).
 #    --token <t>         Auth token for install.
-#    --license <file>    License YAML for install.
+#    --license <file>    License YAML (optional; auto-detected from the tarball).
 #    --channel <c>       Installer release channel (default: stable-v2).
 #    --version <v>       Installer version, e.g. 2.1.1 ('latest' = channel latest).
 #    --http-proxy <url>  Proxy passthrough for install.
