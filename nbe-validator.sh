@@ -17,6 +17,8 @@
 #    --yes               Non-interactive (assume yes to prompts).
 #    --token <t>         Auth token for install.
 #    --license <file>    License YAML for install.
+#    --channel <c>       Installer release channel (default: stable-v2).
+#    --version <v>       Installer version, e.g. 2.1.1 ('latest' = channel latest).
 #    --http-proxy <url>  Proxy passthrough for install.
 #    --https-proxy <url> Proxy passthrough for install.
 #    --private-ca <file> CA bundle for MITM proxies (install).
@@ -43,6 +45,7 @@ ASSUME_YES="false"
 JSON_PATH=""
 INSTALL_TOKEN=""; INSTALL_LICENSE=""
 HTTP_PROXY_OPT=""; HTTPS_PROXY_OPT=""; PRIVATE_CA_OPT=""
+INSTALLER_CHANNEL_OPT=""; INSTALLER_VERSION_OPT=""
 
 # Print the banner comment block (between the two "# ====" borders) as help.
 usage() { sed -n '/^# ===/,/^# ===/p' "${BASH_SOURCE[0]}" | sed 's/^# \?//'; }
@@ -56,6 +59,8 @@ parse_args() {
             --yes|-y)      ASSUME_YES="true"; shift ;;
             --token)       INSTALL_TOKEN="$2"; shift 2 ;;
             --license)     INSTALL_LICENSE="$2"; shift 2 ;;
+            --channel)     INSTALLER_CHANNEL_OPT="$2"; shift 2 ;;
+            --version)     INSTALLER_VERSION_OPT="$2"; shift 2 ;;
             --http-proxy)  HTTP_PROXY_OPT="$2"; shift 2 ;;
             --https-proxy) HTTPS_PROXY_OPT="$2"; shift 2 ;;
             --private-ca)  PRIVATE_CA_OPT="$2"; shift 2 ;;

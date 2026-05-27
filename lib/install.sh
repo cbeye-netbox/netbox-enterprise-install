@@ -42,14 +42,24 @@ run_install() {
     [[ -n "${HTTP_PROXY_OPT:-}" ]]  && install_proxy+=(--http-proxy "${HTTP_PROXY_OPT}")
     [[ -n "${PRIVATE_CA_OPT:-}" ]]  && install_proxy+=(--private-ca "${PRIVATE_CA_OPT}")
 
+    # --- Build the download URL: BASE / CHANNEL [ / VERSION ] ---------------
+    # --channel / --version override the config; --version latest => no version.
+    local channel="${INSTALLER_CHANNEL_OPT:-$INSTALLER_CHANNEL}"
+    local version="$INSTALLER_VERSION"
+    [[ -n "${INSTALLER_VERSION_OPT:-}" ]] && version="$INSTALLER_VERSION_OPT"
+    [[ "$version" == "latest" ]] && version=""
+    local url="${INSTALLER_BASE_URL}/${channel}"
+    [[ -n "$version" ]] && url="${url}/${version}"
+
     # --- Download -----------------------------------------------------------
     header "Downloading installer (~300 MB)"
-    step "curl ${INSTALLER_URL} -> ${INSTALLER_TARBALL}"
+    info "Channel: ${channel}${version:+   Version: ${version}}"
+    step "curl ${url} -> ${INSTALLER_TARBALL}"
     # shellcheck disable=SC2086
-    curl -f ${curl_proxy} "${INSTALLER_URL}" \
+    curl -f ${curl_proxy} "${url}" \
         -H "Authorization: ${INSTALL_TOKEN}" \
         -o "${INSTALLER_TARBALL}" \
-        || die "Download failed — check the token and outbound access to app.enterprise.netboxlabs.com."
+        || die "Download failed — check the token, version (${version:-latest}), and outbound access to app.enterprise.netboxlabs.com."
 
     if ! file "${INSTALLER_TARBALL}" | grep -qi "gzip compressed"; then
         die "Downloaded file is not a gzip archive — the token may be invalid. Got: $(file "${INSTALLER_TARBALL}")"
