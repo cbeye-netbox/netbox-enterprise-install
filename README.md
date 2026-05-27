@@ -220,6 +220,66 @@ The matching `reports/nbe-report-<host>-<timestamp>.json` for that run:
 
 ---
 
+## Example: installing NetBox Enterprise
+
+Once the host passes, `install` downloads the release, auto-detects the license
+bundled in the tarball, and runs the official installer. Replace `<YOUR_TOKEN>`
+with the auth token NetBox Labs gave you:
+
+```bash
+sudo ./nbe-validator.sh install --yes \
+  --token <YOUR_TOKEN>
+# optional: --version 2.1.1   (defaults to the version in lib/requirements.conf)
+```
+
+A real run on this POC host (host re-validation omitted for brevity):
+
+```text
+── Downloading installer (~300 MB) ──────────────────────────────────────
+[INFO]  Channel: stable-v2   Version: 2.1.1
+[ -> ]  curl https://app.enterprise.netboxlabs.com/embedded/netbox-enterprise/stable-v2/2.1.1 -> netbox-enterprise-stable-v2.tgz
+100  424M    0  424M    0     0  15.9M      0 --:--:--  0:00:26 --:--:-- 27.3M
+[ OK ]  Installer downloaded and verified.
+
+── Extracting ──────────────────────────────────────
+[ OK ]  Found bundled license: ./license.yaml
+
+── Running installer ──────────────────────────────────────
+[INFO]  This typically takes 30–45 minutes (5–10 min cluster, 10–15 min app init).
+[INFO]  The installer will prompt you to create an Admin Console password — save it.
+
+? Set the Admin Console password (minimum 6 characters): *********
+? Confirm the Admin Console password: *********
+
+✔  Initialization complete
+✔  Host preflights passed
+✔  Node is ready
+✔  Storage is ready
+✔  Runtime Operator is ready
+✔  Disaster Recovery is ready
+✔  Admin Console is ready
+✔  Additional components are ready
+
+-------------------------------------------------------------------
+Visit the Admin Console to configure and install netbox-enterprise:
+
+http://<your-host-ip>:30000
+-------------------------------------------------------------------
+
+[ OK ]  Installer finished.
+```
+
+After the installer finishes, open the **Admin Console** at
+`http://<your-host>:30000`, log in with the password you just set, and finish
+configuring NetBox Enterprise.
+
+> The installer pauses to ask for the Admin Console password, so run this step
+> in an interactive terminal (e.g. type the command yourself rather than piping
+> it). Everything before the prompt — validation, download, extraction — is
+> automatic.
+
+---
+
 ## The JSON report
 
 `check` (and `apply`) write a machine-readable report to
