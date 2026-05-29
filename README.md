@@ -90,6 +90,12 @@ single editable file, [`lib/requirements.conf`](lib/requirements.conf).
 - Required NetBox/Kubernetes TCP/UDP ports open (ufw, iptables, or firewalld)
 - Pod-network CIDR routing (`10.244.0.0/17` ↔ `10.244.128.0/17`)
 
+**Endpoint security**
+- Microsoft Defender for Endpoint (`mdatp` / `wdavdaemon`) not running — its
+  real-time scanning locks file I/O and interferes with the embedded cluster.
+  Running → **FAIL**, installed but stopped → **WARN**, absent → **OK**.
+  (Ubuntu and RHEL families.)
+
 ---
 
 ## Example run
@@ -338,6 +344,7 @@ lib/
   network.sh            # hostname, static IP, outbound, port availability
   system.sh             # swap, modules, sysctl, headers, SELinux (checks)
   firewall.sh           # firewall backend + required-port checks
+  defender.sh           # Microsoft Defender (mdatp) detection
   remediate.sh          # apply/plan the system-config changes
   install.sh            # download + run the NetBox Enterprise installer
 reports/                # generated JSON reports

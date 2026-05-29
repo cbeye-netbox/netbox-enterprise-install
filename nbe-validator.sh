@@ -34,7 +34,7 @@ LIB="${SCRIPT_DIR}/lib"
 # Source order matters: config first, then helpers, then modules.
 # shellcheck source=/dev/null
 for f in requirements.conf common.sh logo.sh os.sh hardware.sh network.sh \
-         system.sh firewall.sh remediate.sh install.sh; do
+         system.sh firewall.sh defender.sh remediate.sh install.sh; do
     . "${LIB}/${f}"
 done
 
@@ -109,6 +109,7 @@ run_all_checks() {
     check_network
     check_system
     check_firewall
+    check_defender
 }
 
 write_report() {
